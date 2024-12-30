@@ -1,4 +1,4 @@
-<div class="flex justify-center space-x-6">
+<div class="flex items-center justify-center space-x-6">
 	<a
 		href="https://www.youtube.com/@bmdavis419"
 		target="_blank"
