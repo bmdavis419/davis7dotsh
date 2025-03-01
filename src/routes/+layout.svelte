@@ -8,6 +8,6 @@
 		{@render children()}
 	</div>
 	<div
-		class="absolute inset-0 z-0 bg-gradient-to-br from-blue-400/20 via-transparent to-orange-400/20"
+		class="absolute inset-0 z-0 bg-gradient-to-br from-blue-400/20 via-transparent to-neutral-400/20"
 	></div>
 </div>
