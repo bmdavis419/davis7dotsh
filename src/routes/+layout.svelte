@@ -3,7 +3,7 @@
 	let { children } = $props();
 </script>
 
-<div class="flex min-h-screen items-center justify-center bg-black font-geist-mono text-white">
+<div class="dark flex min-h-screen items-center justify-center bg-black font-geist-mono text-white">
 	<div class="relative z-10">
 		{@render children()}
 	</div>
