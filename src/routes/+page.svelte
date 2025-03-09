@@ -10,8 +10,8 @@
 	/>
 </svelte:head>
 
-<main class="px-3 text-center">
-	<article class="prose prose-invert prose-neutral pb-16 text-left">
+<main class="z-10 px-3 text-center">
+	<article class="prose prose-neutral prose-invert pb-16 text-left">
 		<h1 class="mb-0 pb-0">Davis</h1>
 		<p class="m-0">SF based software engineer and YouTuber</p>
 		<p>
@@ -31,6 +31,11 @@
 		<p>
 			<a href="https://www.youtube.com/@bmdavis419" target="_blank">My YouTube Channel</a> is where I
 			post random projects I've built.
+		</p>
+
+		<p>
+			<a href="https://quickbg.davis7.sh" target="_blank">Quick SVG Background</a> is a simple tool to
+			quickly add a background to your SVG. Super useful for thumbnails and other social media posts.
 		</p>
 
 		<p>
