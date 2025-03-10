@@ -82,11 +82,6 @@
 </div>
 
 <style lang="postcss">
-	.social-link {
-		@apply rounded-full p-2 transition-colors duration-200 ease-in-out;
-		@apply hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black;
-	}
-
 	.svg-container {
 		@apply flex h-6 w-6 items-center justify-center;
 	}
