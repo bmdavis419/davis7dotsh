@@ -3,16 +3,16 @@
 </script>
 
 <svelte:head>
-	<title>Davis - dev/youtuber</title>
+	<title>Ben Davis - dev/youtuber</title>
 	<meta
 		name="description"
-		content="Davis is a dev/youtuber. Built Insiderviz, manages Theo's YouTube channel, and more."
+		content="Ben Davis is a dev/youtuber. Built Insiderviz, manages Theo's YouTube channel, and more."
 	/>
 </svelte:head>
 
 <main class="z-10 px-3 text-center">
 	<article class="prose prose-neutral prose-invert pb-16 text-left">
-		<h1 class="mb-0 pb-0">Davis</h1>
+		<h1 class="mb-0 pb-0">Ben Davis</h1>
 		<p class="m-0">SF based software engineer and YouTuber</p>
 		<p>
 			I manage <a href="https://www.youtube.com/@t3dotgg/videos" target="_blank"
