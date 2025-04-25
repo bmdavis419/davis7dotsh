@@ -39,12 +39,6 @@
 		</p>
 
 		<p>
-			<a href="https://www.theblokapp.com" target="_blank">BLOK</a> is a project I've been messing around
-			on for a while. It's a social calendar app. Very much a work in progress, want to ship something
-			later this year.
-		</p>
-
-		<p>
 			<a href="https://github.com/bmdavis419" target="_blank">My GitHub</a> has a bunch of the random
 			OSS things I've built. The biggest one is an open source e-commerce site built with SvelteKit.
 		</p>
