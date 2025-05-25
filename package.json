@@ -18,6 +18,7 @@
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@tailwindcss/typography": "^0.5.16",
+		"@types/d3": "^7.4.3",
 		"autoprefixer": "^10.4.20",
 		"prettier": "^3.3.2",
 		"prettier-plugin-svelte": "^3.2.6",
@@ -31,6 +32,7 @@
 		"wrangler": "^4.9.1"
 	},
 	"dependencies": {
+		"d3": "^7.9.0",
 		"lucide-svelte": "^0.469.0"
 	},
 	"packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"

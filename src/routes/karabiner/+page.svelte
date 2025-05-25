@@ -2,6 +2,7 @@
 	import { codeToHtml } from 'shiki';
 	import { myConfig } from './myConfig';
 	import { Copy } from 'lucide-svelte';
+	import Keyboard from '$lib/components/Keyboard.svelte';
 
 	let html = $state('');
 
@@ -33,6 +34,8 @@
 			class="text-accent underline transition-opacity hover:opacity-80">here</a
 		>.
 	</p>
+
+	<Keyboard />
 
 	<p class="text-secondary">Keybindings:</p>
 	<ul class="space-y-2 font-bold">
