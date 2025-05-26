@@ -35,8 +35,18 @@
 				title: 'Ghosty',
 				description: 'Hyper + 2 opens Ghosty (using raycast)'
 			},
-			{ label: '3', width: 40 },
-			{ label: '4', width: 40 },
+			{
+				label: '3',
+				width: 40,
+				title: 'Cursor',
+				description: 'Hyper + 3 opens Cursor (using raycast)'
+			},
+			{
+				label: '4',
+				width: 40,
+				title: 'Discord',
+				description: 'Hyper + 4 opens Discord (using raycast)'
+			},
 			{ label: '5', width: 40 },
 			{ label: '6', width: 40 },
 			{ label: '7', width: 40 },
@@ -50,10 +60,10 @@
 		[
 			{ label: 'Tab', width: 60 },
 			{ label: 'Q', width: 40 },
-			{ label: 'W', width: 40 },
+			{ label: 'W', width: 40, title: 'CMD + W', description: 'Presses cmd + w' },
 			{ label: 'E', width: 40 },
 			{ label: 'R', width: 40 },
-			{ label: 'T', width: 40 },
+			{ label: 'T', width: 40, title: 'CMD + T', description: 'Presses cmd + t' },
 			{ label: 'Y', width: 40 },
 			{ label: 'U', width: 40 },
 			{ label: 'I', width: 40 },
@@ -70,10 +80,10 @@
 			{ label: 'D', width: 40 },
 			{ label: 'F', width: 40 },
 			{ label: 'G', width: 40 },
-			{ label: 'H', width: 40 },
-			{ label: 'J', width: 40 },
-			{ label: 'K', width: 40 },
-			{ label: 'L', width: 40 },
+			{ label: 'H', width: 40, title: 'Left arrow', description: 'Presses left arrow' },
+			{ label: 'J', width: 40, title: 'Page down', description: 'Presses page down' },
+			{ label: 'K', width: 40, title: 'Page up', description: 'Presses page up' },
+			{ label: 'L', width: 40, title: 'Right arrow', description: 'Presses right arrow' },
 			{ label: ';', width: 40 },
 			{ label: "'", width: 40 },
 			{ label: 'Enter', width: 90 }
@@ -82,11 +92,21 @@
 			{ label: 'Shift', width: 90 },
 			{ label: 'Z', width: 40 },
 			{ label: 'X', width: 40 },
-			{ label: 'C', width: 40 },
-			{ label: 'V', width: 40 },
-			{ label: 'B', width: 40 },
-			{ label: 'N', width: 40 },
-			{ label: 'M', width: 40 },
+			{ label: 'C', width: 40, title: 'Copy', description: 'Hyper + C copies the selected text' },
+			{ label: 'V', width: 40, title: 'Paste', description: 'Hyper + V pastes the copied text' },
+			{ label: 'B', width: 40, title: 'Zen', description: 'Hyper + B opens Zen (using raycast)' },
+			{
+				label: 'N',
+				width: 40,
+				title: 'Notion',
+				description: 'Hyper + N opens Notion (using raycast)'
+			},
+			{
+				label: 'M',
+				width: 40,
+				title: 'Superhuman',
+				description: 'Hyper + M opens Superhuman (using raycast)'
+			},
 			{ label: ',', width: 40 },
 			{ label: '.', width: 40 },
 			{ label: '/', width: 40 },
@@ -200,10 +220,8 @@
 	});
 </script>
 
-<div bind:this={container} class="overflow-x-auto rounded-lg p-4"></div>
-
 <section
-	class="mt-2 flex items-center gap-6 rounded-lg border border-white/20 bg-white/10 p-6 backdrop-blur-sm"
+	class=" flex items-center gap-6 rounded-lg border border-white/20 bg-white/10 p-6 backdrop-blur-sm"
 >
 	<div class="flex-shrink-0">
 		<div
@@ -221,3 +239,5 @@
 		<p class="text-white/70">{keyDescription}</p>
 	</div>
 </section>
+
+<div bind:this={container} class="overflow-x-auto rounded-lg p-4"></div>
