@@ -117,7 +117,7 @@
 			{ label: 'ctrl', width: 60 },
 			{ label: 'opt', width: 60 },
 			{ label: 'cmd', width: 60 },
-			{ label: '', width: 260 }, // Spacebar
+			{ label: '', width: 260, title: 'Space', description: 'Hyper + Space opens Raycast' }, // Spacebar
 			{ label: 'cmd', width: 60 },
 			{ label: 'opt', width: 60 }
 		]
