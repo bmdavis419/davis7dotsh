@@ -17,7 +17,7 @@
 		<p class="mx-0 my-1">
 			<a href="https://github.com/bmdavis419" target="_blank">developer</a>,
 			<a href="https://www.youtube.com/@bmdavis419" target="_blank">youtuber</a>, and
-			<a href="https://www.youtube.com/@t3dotgg/videos" target="_blank">theo's manager</a>, based in
+			<a href="https://www.youtube.com/@t3dotgg/videos" target="_blank">theo's manager</a>. based in
 			sf.
 		</p>
 
