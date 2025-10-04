@@ -38,8 +38,8 @@
 		</p>
 
 		<p>
-			<a href="https://quickbg.davis7.sh" target="_blank">Quick SVG Background</a> is a simple tool to
-			quickly add a background to your SVG. Super useful for thumbnails and other social media posts.
+			<a href="https://svg.davis7.sh" target="_blank">Quick SVG Background</a> is a simple tool to quickly
+			add a background to your SVG. Super useful for thumbnails and other social media posts.
 		</p>
 
 		<p>
