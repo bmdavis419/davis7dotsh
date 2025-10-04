@@ -237,6 +237,12 @@
 
 	$effect(() => {
 		render();
+		return () => {
+			if (lastTimeout) {
+				clearTimeout(lastTimeout);
+				lastTimeout = null;
+			}
+		};
 	});
 </script>
 
