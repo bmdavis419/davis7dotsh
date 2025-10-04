@@ -49,10 +49,30 @@
 			},
 			{ label: '5', width: 40 },
 			{ label: '6', width: 40 },
-			{ label: '7', width: 40 },
-			{ label: '8', width: 40 },
-			{ label: '9', width: 40 },
-			{ label: '0', width: 40 },
+			{
+				label: '7',
+				width: 40,
+				title: 'Final Cut Pro',
+				description: 'Hyper + 7 opens Final Cut Pro (using raycast)'
+			},
+			{
+				label: '8',
+				width: 40,
+				title: 'Affinity Photo',
+				description: 'Hyper + 8 opens Affinity Photo (using raycast)'
+			},
+			{
+				label: '9',
+				width: 40,
+				title: 'Todoist',
+				description: 'Hyper + 9 opens Todoist (using raycast)'
+			},
+			{
+				label: '0',
+				width: 40,
+				title: 'Obsidian',
+				description: 'Hyper + 0 opens Obsidian (using raycast)'
+			},
 			{ label: '-', width: 40 },
 			{ label: '=', width: 40 },
 			{ label: 'Backspace', width: 80 }
@@ -64,7 +84,7 @@
 			{ label: 'E', width: 40 },
 			{ label: 'R', width: 40 },
 			{ label: 'T', width: 40, title: 'CMD + T', description: 'Presses cmd + t' },
-			{ label: 'Y', width: 40 },
+			{ label: 'Y', width: 40, title: 'CMD + Y', description: 'Presses cmd + y' },
 			{ label: 'U', width: 40 },
 			{ label: 'I', width: 40 },
 			{ label: 'O', width: 40 },
@@ -75,7 +95,7 @@
 		],
 		[
 			{ label: 'Caps', width: 70 },
-			{ label: 'A', width: 40 },
+			{ label: 'A', width: 40, title: 'CMD + A', description: 'Presses cmd + a' },
 			{ label: 'S', width: 40 },
 			{ label: 'D', width: 40 },
 			{ label: 'F', width: 40 },
@@ -92,8 +112,8 @@
 			{ label: 'Shift', width: 90 },
 			{ label: 'Z', width: 40 },
 			{ label: 'X', width: 40 },
-			{ label: 'C', width: 40, title: 'Copy', description: 'Hyper + C copies the selected text' },
-			{ label: 'V', width: 40, title: 'Paste', description: 'Hyper + V pastes the copied text' },
+			{ label: 'C', width: 40, title: 'CMD + C', description: 'Presses cmd + c' },
+			{ label: 'V', width: 40, title: 'CMD + V', description: 'Presses cmd + v' },
 			{ label: 'B', width: 40, title: 'Zen', description: 'Hyper + B opens Zen (using raycast)' },
 			{
 				label: 'N',
@@ -221,7 +241,7 @@
 </script>
 
 <section
-	class=" flex items-center gap-6 rounded-lg border border-white/20 bg-white/10 p-6 backdrop-blur-sm"
+	class=" flex w-full items-center gap-6 rounded-lg border border-white/20 bg-white/10 p-6 backdrop-blur-sm"
 >
 	<div class="flex-shrink-0">
 		<div
