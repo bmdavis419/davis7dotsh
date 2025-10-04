@@ -5,7 +5,7 @@
 
 <svelte:head>
 	<title>Ben Davis - dev & youtuber</title>
-	<meta name="description" content="developer, youtuber, and theo's manager. based in SF" />
+	<meta name="description" content="developer, youtuber, and theo's manager. based in sf" />
 </svelte:head>
 
 <main class="z-10 px-3 text-center">
@@ -17,9 +17,9 @@
 		<p class="mx-0 my-1">
 			<a href="https://github.com/bmdavis419" target="_blank">developer</a>,
 			<a href="https://www.youtube.com/@bmdavis419" target="_blank">youtuber</a>, and
-			<a href="https://www.youtube.com/@t3dotgg/videos" target="_blank">theo's manager</a>.
+			<a href="https://www.youtube.com/@t3dotgg/videos" target="_blank">theo's manager</a>, based in
+			sf.
 		</p>
-		<p class="m-0 flex items-center gap-1">in san francisco</p>
 
 		<h3>You might be looking for:</h3>
 
