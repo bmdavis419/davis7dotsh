@@ -27,6 +27,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Ben Davis - Karabiner Config</title>
+</svelte:head>
+
 <div class="flex flex-col items-start gap-8">
 	<a href="/" class="text-accent hover:text-accent/80 mb-2 transition-colors">← Back to Home</a>
 	<h2 class="text-primary text-2xl font-semibold">My Karabiner Config</h2>
@@ -53,7 +57,10 @@
 	<p class="text-secondary">Keybindings:</p>
 	<ul class="w-full space-y-2 font-bold">
 		<li class="text-secondary border-border border-b py-2 last:border-b-0">Caps Lock to Hyper</li>
-		<li class="text-secondary border-border border-b py-2 last:border-b-0">Hyper + a to cmd+a</li>
+		<li class="text-secondary border-border border-b py-2 last:border-b-0">
+			Hyper + tab to control + tab
+		</li>
+		<li class="text-secondary border-border border-b py-2 last:border-b-0">Hyper + a to cmd + a</li>
 		<li class="text-secondary border-border border-b py-2 last:border-b-0">
 			Hyper + j/k to pageup/pagedown
 		</li>

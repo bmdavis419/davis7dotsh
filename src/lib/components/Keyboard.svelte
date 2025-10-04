@@ -78,7 +78,7 @@
 			{ label: 'Backspace', width: 80 }
 		],
 		[
-			{ label: 'Tab', width: 60 },
+			{ label: 'Tab', width: 60, title: 'control + tab', description: 'Presses control + tab' },
 			{ label: 'Q', width: 40 },
 			{ label: 'W', width: 40, title: 'CMD + W', description: 'Presses cmd + w' },
 			{ label: 'E', width: 40 },

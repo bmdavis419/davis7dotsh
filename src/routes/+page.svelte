@@ -19,14 +19,19 @@
 			<a href="https://www.youtube.com/@bmdavis419" target="_blank">youtuber</a>, and
 			<a href="https://www.youtube.com/@t3dotgg/videos" target="_blank">theo's manager</a>
 		</p>
-		<p class="m-0">based in SF</p>
+		<p class="m-0 flex items-center gap-1">in san francisco</p>
 
 		<h3>You might be looking for:</h3>
 
 		<p>
-			<a href="/karabiner">My Mac Setup</a>: a collection of resources on how I setup my mac to be a
-			power user's dream. Includes my karabiner config, keyboard shortcuts, tools I used to make my
+			<a href="/macos">My MacOS Setup</a>: a collection of resources on how I setup my mac to be a
+			power user's dream. Includes karabiner config, keyboard shortcuts, tools I used to make my
 			configs, all the programs I use, and more.
+		</p>
+
+		<p>
+			<a href="/karabiner">Karabiner Config</a>: my complete karabiner elements config and a
+			visualizer for all my keybindings.
 		</p>
 
 		<p>
