@@ -2,12 +2,9 @@
 
 ## Build/Test/Lint Commands
 
-- **Dev server**: `pnpm dev` (Vite dev server)
-- **Build**: `pnpm build` (Production build)
-- **Type check**: `pnpm check` (SvelteKit sync + svelte-check)
-- **Format**: `pnpm format` (Prettier --write)
-- **Lint**: `pnpm lint` (Prettier --check)
-- **Preview**: `pnpm preview` (Preview production build)
+- **Type check**: `bun check` (SvelteKit sync + svelte-check)
+- **Format**: `bun format` (Prettier --write)
+- **Lint**: `bun lint` (Prettier --check)
 
 ## Code Style Guidelines
 
@@ -24,7 +21,7 @@
 - **Styling**: TailwindCSS with PostCSS
 - **Fonts**: Geist and GeistMono (custom fonts in static/)
 - **Adapter**: Vercel deployment
-- **Package manager**: pnpm (required)
+- **Package manager**: bun (required)
 
 ## Import Conventions
 

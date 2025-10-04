@@ -4,11 +4,8 @@
 </script>
 
 <svelte:head>
-	<title>Ben Davis - dev/youtuber</title>
-	<meta
-		name="description"
-		content="Ben Davis is a dev/youtuber. Built Insiderviz, manages Theo's YouTube channel, and more."
-	/>
+	<title>Ben Davis - dev & youtuber</title>
+	<meta name="description" content="developer, youtuber, and theo's manager. based in SF" />
 </svelte:head>
 
 <main class="z-10 px-3 text-center">
@@ -17,34 +14,36 @@
 			<img src={logo} alt="Ben Davis Logo" class="w-24" />
 		</div>
 		<h1 class="mb-0 pb-0">Ben Davis</h1>
-		<p class="m-0">SF based software engineer and YouTuber</p>
-		<p>
-			I manage <a href="https://www.youtube.com/@t3dotgg/videos" target="_blank"
-				>Theo's YouTube Channel</a
-			>, build random projects, and run a channel of
-			<a href="https://www.youtube.com/@bmdavis419" target="_blank">my own</a>.
+		<p class="mx-0 my-1">
+			<a href="https://github.com/bmdavis419" target="_blank">developer</a>,
+			<a href="https://www.youtube.com/@bmdavis419" target="_blank">youtuber</a>, and
+			<a href="https://www.youtube.com/@t3dotgg/videos" target="_blank">theo's manager</a>
 		</p>
+		<p class="m-0 flex items-center gap-1">in san francisco</p>
 
-		<h2>Stuff I've Built</h2>
-
-		<p>
-			<a href="https://insiderviz.com" target="_blank">Insiderviz</a> is the biggest project I've shipped
-			myself. It's an insider trading data visualization platform.
-		</p>
+		<h3>You might be looking for:</h3>
 
 		<p>
-			<a href="https://www.youtube.com/@bmdavis419" target="_blank">My YouTube Channel</a> is where I
-			post random projects I've built.
+			<a href="/macos">My MacOS Setup</a>: a collection of resources on how I setup my mac to be a
+			power user's dream. Includes karabiner config, keyboard shortcuts, tools I used to make my
+			configs, all the programs I use, and more.
 		</p>
 
 		<p>
-			<a href="https://svg.davis7.sh" target="_blank">Quick SVG Background</a> is a simple tool to quickly
-			add a background to your SVG. Super useful for thumbnails and other social media posts.
+			<a href="/karabiner">Karabiner Config</a>: my complete karabiner elements config and a
+			visualizer for all my keybindings.
 		</p>
 
 		<p>
-			<a href="https://github.com/bmdavis419" target="_blank">My GitHub</a> has a bunch of the random
-			OSS things I've built. The biggest one is an open source e-commerce site built with SvelteKit.
+			<a href="https://insiderviz.com" target="_blank">Insiderviz</a>: an insider trading data
+			visualization platform. I built this in college with the boys. Was a really cool project that
+			is now pretty much abandoned.
+		</p>
+
+		<p>
+			<a href="https://svg.davis7.sh" target="_blank">Quick SVG Background</a>: A really simple
+			webapp for uploading an SVG and adding a background to it. I know it sounds dumb, but I use it
+			all the time for making thumbnails.
 		</p>
 	</article>
 	<SocialLinks />
