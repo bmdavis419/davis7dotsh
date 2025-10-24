@@ -35,6 +35,11 @@
 		</p>
 
 		<p>
+			<a href="/sv">SvelteKit Setup</a>: a bunch of prompts/cursor rules to get your SvelteKit
+			project started.
+		</p>
+
+		<p>
 			<a href="https://insiderviz.com" target="_blank">Insiderviz</a>: an insider trading data
 			visualization platform. I built this in college with the boys. Was a really cool project that
 			is now pretty much abandoned.
