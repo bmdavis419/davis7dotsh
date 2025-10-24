@@ -11,6 +11,59 @@ bun remove @sveltejs/adapter-auto
 import adapter from '@sveltejs/adapter-vercel';
 `;
 
+const CLOUDFLARE_SETUP_PROMPT = `
+Setup this SvelteKit project to be deployed to Cloudflare workers by doing the following:
+1. install the adapter and get rid of the old one:
+bun add -D @sveltejs/adapter-cloudflare
+bun remove @sveltejs/adapter-auto
+2. update the svelte.config.js file to use the new adapter:
+import adapter from '@sveltejs/adapter-cloudflare';
+3. update the scripts in package.json to be the following:
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "bun run build && wrangler dev",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"deploy": "bun run build && wrangler deploy",
+		"cf-typegen": "wrangler types ./src/worker-configuration.d.ts",
+		"format": "prettier --write .",
+		"lint": "prettier --check ."
+	},
+4. create a wrangler.jsonc file in the root of the project with the following content:
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "",
+	"main": ".svelte-kit/cloudflare/_worker.js",
+	"compatibility_flags": ["nodejs_compat"],
+	"compatibility_date": "2025-10-11",
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
+	},
+	"observability": {
+		"enabled": true
+	}
+}
+fill the name with the name in the package.json file.
+5. generate the types with: bun run cf-typegen
+6. update app.d.ts to be the following:
+// See https://svelte.dev/docs/kit/types#app.d.ts
+// for information about these interfaces
+declare global {
+	namespace App {
+		interface Platform {
+			env: Env;
+			cf: CfProperties;
+			ctx: ExecutionContext;
+		}
+	}
+}
+
+export {};
+`;
+
 const CURSOR_RULES_PROMPT = `
 Setup the cursor rules for this project by doing the following:
 
@@ -105,6 +158,7 @@ NOTE: if there is not a primary color set, just use orange-500
 
 const getPromptsSchema = z.object({
 	vercelSetup: z.boolean(),
+	cloudflareSetup: z.boolean(),
 	cursorRules: z.boolean(),
 	usefulPackages: z.boolean(),
 	asyncSvelte: z.boolean(),
@@ -128,6 +182,7 @@ export const remoteGetPrompts = command(getPromptsSchema, (opts) => {
 	if (opts.cursorRules) prompts.push(CURSOR_RULES_PROMPT);
 	if (opts.usefulPackages) prompts.push(USEFUL_PACKAGES_PROMPT);
 	if (opts.vercelSetup) prompts.push(VERCEL_SETUP_PROMPT);
+	if (opts.cloudflareSetup) prompts.push(CLOUDFLARE_SETUP_PROMPT);
 	if (opts.vscodeTheme) prompts.push(VSCODE_THEME_PROMPT(opts.vscodeTheme));
 	if (opts.tailwindTheme) prompts.push(TAILWIND_THEME_PROMPT(opts.tailwindTheme));
 	if (opts.helloWorld) prompts.push(HELLO_WORLD_PROMPT);

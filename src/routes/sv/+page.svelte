@@ -2,6 +2,7 @@
 	import { remoteGetPrompts } from '$lib/prompts.remote';
 
 	let vercelSetup = $state(false);
+	let cloudflareSetup = $state(false);
 	let cursorRules = $state(false);
 	let usefulPackages = $state(false);
 	let asyncSvelte = $state(false);
@@ -29,6 +30,7 @@
 		try {
 			const prompts = await remoteGetPrompts({
 				vercelSetup,
+				cloudflareSetup,
 				cursorRules,
 				usefulPackages,
 				asyncSvelte,
@@ -59,12 +61,23 @@
 			vscodeThemeEnabled &&
 			tailwindThemeEnabled;
 		vercelSetup = !allChecked;
+		cloudflareSetup = false;
 		cursorRules = !allChecked;
 		usefulPackages = !allChecked;
 		asyncSvelte = !allChecked;
 		helloWorld = !allChecked;
 		vscodeThemeEnabled = !allChecked;
 		tailwindThemeEnabled = !allChecked;
+	}
+
+	function handleVercelChange(value: boolean) {
+		vercelSetup = value;
+		if (value) cloudflareSetup = false;
+	}
+
+	function handleCloudflareChange(value: boolean) {
+		cloudflareSetup = value;
+		if (value) vercelSetup = false;
 	}
 </script>
 
@@ -104,10 +117,20 @@
 				<label class="flex cursor-pointer items-center gap-3">
 					<input
 						type="checkbox"
-						bind:checked={vercelSetup}
+						checked={vercelSetup}
+						onchange={(e) => handleVercelChange(e.currentTarget.checked)}
 						class="h-4 w-4 cursor-pointer rounded border-neutral-600 text-blue-500"
 					/>
 					<span class="text-sm font-medium text-neutral-200">Vercel Setup</span>
+				</label>
+				<label class="flex cursor-pointer items-center gap-3">
+					<input
+						type="checkbox"
+						checked={cloudflareSetup}
+						onchange={(e) => handleCloudflareChange(e.currentTarget.checked)}
+						class="h-4 w-4 cursor-pointer rounded border-neutral-600 text-blue-500"
+					/>
+					<span class="text-sm font-medium text-neutral-200">Cloudflare Setup</span>
 				</label>
 				<label class="flex cursor-pointer items-center gap-3">
 					<input
