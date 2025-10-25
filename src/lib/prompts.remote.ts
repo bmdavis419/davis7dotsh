@@ -11,6 +11,37 @@ bun remove @sveltejs/adapter-auto
 import adapter from '@sveltejs/adapter-vercel';
 `;
 
+const CONVEX_SETUP_PROMPT = `
+Setup convex to be used in this project by doing the following:
+
+1. install the convex packages:
+bun add convex convex-svelte
+2. create a convex.json file in the root of the project with the following content:
+{
+	"$schema": "https://raw.githubusercontent.com/get-convex/convex-backend/refs/heads/main/npm-packages/convex/schemas/convex.schema.json",
+	"functions": "src/convex/"
+}
+3. update the dev scripts in the package.json and install the concurrently package:
+bun add -D concurrently
+
+"dev": "concurrently --names \"SVELTE,CONVEX\" -c yellow,magenta \"bun run dev:sv\" \"bun run dev:cx\"",
+"dev:sv": "vite dev",
+"dev:cx": "convex dev",
+4. update the +layout.svelte file at the root of the routes directory to include the following in the script tag:
+<script lang="ts">  
+import { PUBLIC_CONVEX_URL } from '$env/static/public';  
+import { setupConvex } from 'convex-svelte';  
+  
+const { children } = $props();  
+setupConvex(PUBLIC_CONVEX_URL);  
+</script>
+don't get rid of anything else in the +layout.svelte file, just add the above code.
+5. add in the convex cursor rules by running the following command:
+curl "https://www.davis7.sh/sv/rules?rule=convex" -o .cursor/rules/convex.mdc
+6. prompt the user when this agent run is finished to run the following command to setup the convex project:
+bun run dev:cx
+`;
+
 const CLOUDFLARE_SETUP_PROMPT = `
 Setup this SvelteKit project to be deployed to Cloudflare workers by doing the following:
 1. install the adapter and get rid of the old one:
@@ -163,6 +194,7 @@ const getPromptsSchema = z.object({
 	usefulPackages: z.boolean(),
 	asyncSvelte: z.boolean(),
 	helloWorld: z.boolean(),
+	convexSetup: z.boolean(),
 	vscodeTheme: z
 		.object({
 			topBarColor: z.string(),
@@ -186,5 +218,6 @@ export const remoteGetPrompts = command(getPromptsSchema, (opts) => {
 	if (opts.vscodeTheme) prompts.push(VSCODE_THEME_PROMPT(opts.vscodeTheme));
 	if (opts.tailwindTheme) prompts.push(TAILWIND_THEME_PROMPT(opts.tailwindTheme));
 	if (opts.helloWorld) prompts.push(HELLO_WORLD_PROMPT);
+	if (opts.convexSetup) prompts.push(CONVEX_SETUP_PROMPT);
 	return prompts.join('\n');
 });

@@ -7,6 +7,7 @@
 	let usefulPackages = $state(false);
 	let asyncSvelte = $state(false);
 	let helloWorld = $state(false);
+	let convexSetup = $state(false);
 	let vscodeThemeEnabled = $state(false);
 	let topBarColor = $state('#1f2937');
 	let topBarTextColor = $state('#ffffff');
@@ -33,6 +34,7 @@
 				cloudflareSetup,
 				cursorRules,
 				usefulPackages,
+				convexSetup,
 				asyncSvelte,
 				helloWorld,
 				vscodeTheme: vscodeThemeEnabled ? { topBarColor, topBarTextColor } : undefined,
@@ -59,7 +61,8 @@
 			asyncSvelte &&
 			helloWorld &&
 			vscodeThemeEnabled &&
-			tailwindThemeEnabled;
+			tailwindThemeEnabled &&
+			convexSetup;
 		vercelSetup = !allChecked;
 		cloudflareSetup = false;
 		cursorRules = !allChecked;
@@ -68,6 +71,7 @@
 		helloWorld = !allChecked;
 		vscodeThemeEnabled = !allChecked;
 		tailwindThemeEnabled = !allChecked;
+		convexSetup = !allChecked;
 	}
 
 	function handleVercelChange(value: boolean) {
@@ -81,7 +85,12 @@
 	}
 </script>
 
-<div class="w-full max-w-2xl space-y-8">
+<svelte:head>
+	<title>SvelteKit Setup</title>
+	<meta name="description" content="An easy way to setup your SvelteKit project." />
+</svelte:head>
+
+<div class="w-full max-w-2xl space-y-8 px-3">
 	<div class="space-y-4">
 		<a
 			href="/"
@@ -98,8 +107,8 @@
 			</button>
 		</div>
 		<p class="text-lg text-neutral-300">
-			An easy way to setup you SvelteKit project. Select the options you want to enable and copy the
-			prompts to your clipboard, then paste them into cursor.
+			An easy way to setup your SvelteKit project. Select the options you want to enable and copy
+			the prompts to your clipboard, then paste them into cursor.
 		</p>
 		<p class="text-lg text-neutral-300">
 			This will not create a project for you, to do that run: <code
@@ -119,51 +128,79 @@
 						type="checkbox"
 						checked={vercelSetup}
 						onchange={(e) => handleVercelChange(e.currentTarget.checked)}
-						class="h-4 w-4 cursor-pointer rounded border-neutral-600 text-blue-500"
+						class="h-5 w-5 cursor-pointer rounded border-neutral-600 text-blue-500"
 					/>
 					<span class="text-sm font-medium text-neutral-200">Vercel Setup</span>
 				</label>
+				<p class="ml-8 text-xs text-neutral-400">
+					Adds the vercel adapter and removes the default one
+				</p>
 				<label class="flex cursor-pointer items-center gap-3">
 					<input
 						type="checkbox"
 						checked={cloudflareSetup}
 						onchange={(e) => handleCloudflareChange(e.currentTarget.checked)}
-						class="h-4 w-4 cursor-pointer rounded border-neutral-600 text-blue-500"
+						class="h-5 w-5 cursor-pointer rounded border-neutral-600 text-blue-500"
 					/>
 					<span class="text-sm font-medium text-neutral-200">Cloudflare Setup</span>
 				</label>
+				<p class="ml-8 text-xs text-neutral-400">
+					Adds the cloudflare adapter, sets up wrangler, and gives you the right commands to deploy
+					to cloudflare
+				</p>
+				<label class="flex cursor-pointer items-center gap-3">
+					<input
+						type="checkbox"
+						bind:checked={convexSetup}
+						class="h-5 w-5 cursor-pointer rounded border-neutral-600 text-blue-500"
+					/>
+					<span class="text-sm font-medium text-neutral-200">Convex Setup</span>
+				</label>
+				<p class="ml-8 text-xs text-neutral-400">
+					Sets up convex in your sveltekit app and gives you a good cursor rule for it
+				</p>
 				<label class="flex cursor-pointer items-center gap-3">
 					<input
 						type="checkbox"
 						bind:checked={cursorRules}
-						class="h-4 w-4 cursor-pointer rounded border-neutral-600 text-blue-500"
+						class="h-5 w-5 cursor-pointer rounded border-neutral-600 text-blue-500"
 					/>
 					<span class="text-sm font-medium text-neutral-200">Cursor Rules</span>
 				</label>
+				<p class="ml-8 text-xs text-neutral-400">
+					Adds 4 useful cursor rules for sveltekit: global, neverthrow, svelte, and tailwindcss
+				</p>
 				<label class="flex cursor-pointer items-center gap-3">
 					<input
 						type="checkbox"
 						bind:checked={usefulPackages}
-						class="h-4 w-4 cursor-pointer rounded border-neutral-600 text-blue-500"
+						class="h-5 w-5 cursor-pointer rounded border-neutral-600 text-blue-500"
 					/>
 					<span class="text-sm font-medium text-neutral-200">Useful Packages</span>
 				</label>
+				<p class="ml-8 text-xs text-neutral-400">
+					Adds useful packages for sveltekit: runed, neverthrow, and zod
+				</p>
 				<label class="flex cursor-pointer items-center gap-3">
 					<input
 						type="checkbox"
 						bind:checked={asyncSvelte}
-						class="h-4 w-4 cursor-pointer rounded border-neutral-600 text-blue-500"
+						class="h-5 w-5 cursor-pointer rounded border-neutral-600 text-blue-500"
 					/>
 					<span class="text-sm font-medium text-neutral-200">Async Svelte</span>
 				</label>
+				<p class="ml-8 text-xs text-neutral-400">
+					Updates the svelte.config.js file to support async svelte
+				</p>
 				<label class="flex cursor-pointer items-center gap-3">
 					<input
 						type="checkbox"
 						bind:checked={helloWorld}
-						class="h-4 w-4 cursor-pointer rounded border-neutral-600 text-blue-500"
+						class="h-5 w-5 cursor-pointer rounded border-neutral-600 text-blue-500"
 					/>
 					<span class="text-sm font-medium text-neutral-200">Hello World</span>
 				</label>
+				<p class="ml-8 text-xs text-neutral-400">Makes the default page a nicer hello world</p>
 			</div>
 		</div>
 
