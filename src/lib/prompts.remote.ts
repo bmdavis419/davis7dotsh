@@ -40,6 +40,13 @@ don't get rid of anything else in the +layout.svelte file, just add the above co
 curl "https://www.davis7.sh/sv/rules?rule=convex" -o .cursor/rules/convex.mdc
 6. prompt the user when this agent run is finished to run the following command to setup the convex project:
 bun run dev:cx
+7. update the svelte.config.js to include the following:
+kit: {
+		alias: {
+			$convex: './src/convex'
+		}
+}
+leave the rest of the svelte.config.js file alone (including the kit section, just add the alias)
 `;
 
 const CLOUDFLARE_SETUP_PROMPT = `
