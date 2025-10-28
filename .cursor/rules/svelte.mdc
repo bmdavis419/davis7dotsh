@@ -323,6 +323,47 @@ alwaysApply: false
 - **Lifecycle (`svelte`):** `onMount(() => cleanup?)` (browser-only, runs after mount), `onDestroy(() => ...)` (runs before unmount), `tick()` (promise resolving after updates). `$effect.pre`/`$effect` replace `before/afterUpdate`.
 - **Imperative API (`svelte`):** Less common for generation. `mount(Comp, { target, props })`, `unmount(instance)`, `hydrate(Comp, { target, props })`. SSR: `render(Comp, { props })` from `svelte/server`.
 
+**Stores with Classes and Context**
+
+- **Class-based Stores:** Create reactive stores using classes with `$state` and `$derived` runes. `CORRECT: Use classes for complex state management with methods and derived values. AVOID: Overusing for simple component state.`
+  ```ts
+  class AuthStore {
+    private userId = $state<string | null>(null);
+    
+    isLoading = $derived(this.userId === null);
+    isAuthenticated = $derived(this.userId !== null);
+    
+    setUser = (id: string) => {
+      this.userId = id;
+    };
+  }
+  ```
+- **Context Pattern:** Use `createContext` with `setContext`/`getContext` to share store instances across component tree.
+  ```ts
+  import { createContext } from 'svelte';
+  
+  const [getStore, setStore] = createContext<AuthStore>();
+  
+  // In parent component
+  setStore(new AuthStore());
+  
+  // In child components
+  const store = getStore();
+  ```
+- **Setup Pattern:** `CORRECT: Create context tuple, initialize store in parent component with setContext, access in children with getContext. AVOID: Storing context keys in separate constants (unnecessary abstraction).`
+  ```ts
+  const [internalGetStore, internalSetStore] = createContext<AuthStore>();
+  
+  export const getStore = () => {
+    const store = internalGetStore();
+    if (!store) throw new Error('Store not found');
+    return store;
+  };
+  
+  export const setStore = () => internalSetStore(new AuthStore());
+  ```
+- **Usage:** Parent components call `setStore()` to initialize; child components call `getStore()` to access the shared instance. All `$state` and `$derived` properties remain reactive.
+
 ---
 
 # sveltekit docs:
