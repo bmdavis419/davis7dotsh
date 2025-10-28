@@ -110,7 +110,8 @@ Setup the cursor rules for this project by doing the following:
 curl "https://www.davis7.sh/sv/rules?rule=global" -o .cursor/rules/global.mdc && \
 curl "https://www.davis7.sh/sv/rules?rule=neverthrow" -o .cursor/rules/neverthrow.mdc && \
 curl "https://www.davis7.sh/sv/rules?rule=svelte" -o .cursor/rules/svelte.mdc && \
-curl "https://www.davis7.sh/sv/rules?rule=tailwindcss" -o .cursor/rules/tailwindcss.mdc
+curl "https://www.davis7.sh/sv/rules?rule=tailwindcss" -o .cursor/rules/tailwindcss.mdc && \
+curl "https://www.davis7.sh/sv/rules?rule=convex" -o .cursor/rules/convex.mdc
 `;
 
 const USEFUL_PACKAGES_PROMPT = `

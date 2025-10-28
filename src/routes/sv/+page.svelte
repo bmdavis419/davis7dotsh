@@ -168,7 +168,7 @@
 					<span class="text-sm font-medium text-neutral-200">Cursor Rules</span>
 				</label>
 				<p class="ml-8 text-xs text-neutral-400">
-					Adds 4 useful cursor rules for sveltekit: global, neverthrow, svelte, and tailwindcss
+					Adds 5 useful cursor rules for sveltekit: global, neverthrow, svelte, tailwindcss, and convex
 				</p>
 				<label class="flex cursor-pointer items-center gap-3">
 					<input
