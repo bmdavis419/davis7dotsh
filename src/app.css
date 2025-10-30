@@ -1,6 +1,10 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --font-family-geist: 'Geist', system-ui, -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
+  --font-family-geist-mono: 'GeistMono', monospace;
+}
 
 @font-face {
 	font-family: 'GeistMono';
@@ -37,7 +41,7 @@
 	height: 1px;
 	bottom: -2px;
 	left: 0;
-	background-color: theme('colors.blue.300');
+	background-color: var(--color-blue-300);
 	transform: scaleX(0);
 	transform-origin: bottom right;
 	transition: transform 0.3s ease-out;
