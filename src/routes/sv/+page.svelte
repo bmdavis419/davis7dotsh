@@ -312,14 +312,10 @@
 <!-- Toast Notification -->
 {#if toastMessage}
 	<div
-		class={`fixed bottom-6 right-6 rounded-lg px-4 py-3 text-sm font-medium text-white shadow-lg transition-opacity ${toastType === 'success' ? 'bg-green-600' : 'bg-red-600'}`}
+		class={`fixed bottom-8 right-8 z-50 flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-medium shadow-xl backdrop-blur-sm transition-all ${toastType === 'success' ? 'border-green-500/30 bg-green-500/10 text-green-300' : 'border-red-500/30 bg-red-500/10 text-red-300'}`}
 	>
+		<div class={`h-2 w-2 rounded-full ${toastType === 'success' ? 'bg-green-400' : 'bg-red-400'}`}></div>
 		{toastMessage}
 	</div>
 {/if}
 
-<style>
-	input[type='checkbox'] {
-		accent-color: rgb(37, 99, 235);
-	}
-</style>

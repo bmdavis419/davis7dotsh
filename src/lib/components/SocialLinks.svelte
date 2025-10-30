@@ -82,6 +82,8 @@
 </div>
 
 <style lang="postcss">
+	@reference 'tailwindcss';
+
 	.svg-container {
 		@apply flex h-6 w-6 items-center justify-center;
 	}
