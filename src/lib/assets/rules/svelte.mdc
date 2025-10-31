@@ -8,6 +8,27 @@ alwaysApply: false
 - use svelte 5 (runes, snippets, etc.) syntax
 - use remote functions where you can, they are the preferred way to fetch data from the server
 - use the new async svelte features when it makes sense to with `<svelte:boundary>` and `await`. it's very similar to how suspense works in react
+- if you need to use lucide icons, you can import them from @lucide/svelte (`<script>
+  import { Skull } from '@lucide/svelte';
+</script>`)
+
+# Svelte 5 Migration Guide
+
+> [!NOTE] **Svelte 5 Migration Changes**
+>
+> For a comprehensive migration guide, see: https://svelte.dev/docs/svelte/v5-migration-guide/llms.txt
+>
+> **Key Changes:**
+>
+> - **Runes API:** Replaced implicit reactivity (`$:`) with explicit runes (`$state`, `$derived`, `$effect`)
+> - **Props:** Changed from `export let` to `$props()` rune with destructuring
+> - **Events:** Changed from `on:click` to `onclick` (no colon)
+> - **Event Modifiers:** Event modifiers are no longer supported. Instead of `<button on:click|once|preventDefault={handler}>`, use `onclick` and handle modifiers in the handler function
+> - **Slots to Snippets:** Replaced `<slot>` with `{#snippet}` and `{@render}`
+> - **Actions:** Replaced `use:` directive with `@attach`
+> - **Component API:** Components are now functions instead of classes
+> - **Two-way Binding:** Requires explicit `$bindable` rune for bindable props
+> - **Server Rendering:** Components no longer have `render()` method; use `render()` from `svelte/server` for SSR
 
 # svelte 5 docs:
 
@@ -244,31 +265,13 @@ alwaysApply: false
 - **`bind:this`:** Get reference to DOM element or component instance.
 - **Component Binding:** Requires child prop marked with `$bindable`. `<Child bind:value={parentState} />`.
 - **Function Bindings:** Advanced control: `bind:value={() => getter, (v) => setter(v)}`. Readonly binding: `bind:clientWidth={null, redrawFn}`.
+- See: https://svelte.dev/docs/svelte/bind/llms.txt
 
-**Actions (`use:`)**
+**Actions (`@attach`)**
 
-- **`use:action={params}`:** Attach JS behavior to an element lifecycle.
-
-  ```svelte
-  <script>
-  	import { tick } from 'svelte'; // Use tick if needed inside action
-  	/** @type {import('svelte/action').Action<HTMLDivElement, { speed: number }>} */
-  	function longpress(node, params = { speed: 100 }) {
-  		// setup logic, e.g., event listeners
-  		console.log('Action mounted with speed', params.speed);
-  		return {
-  			// update(newParams) { /* logic if params change */ }, // Optional update function
-  			destroy() {
-  				/* cleanup logic */
-  			}
-  		};
-  	}
-  </script>
-
-  <div use:longpress={{ speed: 50 }}>Long press me</div>
-  ```
-
-- **Runs:** Only in browser, once on mount. `update` runs if params change. `destroy` runs on unmount.
+> [!NOTE] **Actions in Svelte 5**
+>
+> The `use:` directive has been replaced with `@attach` in Svelte 5. For information on how to use `@attach`, see: https://svelte.dev/docs/svelte/@attach/llms.txt
 
 **Transitions & Animations**
 
@@ -276,6 +279,7 @@ alwaysApply: false
 - **`in:fn={params}` / `out:fn={params}`:** Unidirectional transitions.
 - **`animate:fn={params}`:** Animate reordering within keyed `{#each}` blocks. From `svelte/animate`.
 - **Custom Functions:** Return object with `delay`, `duration`, `easing`, and `css` (preferred) or `tick`.
+- See: https://svelte.dev/docs/svelte/svelte-transition/llms.txt
 
 **Styling**
 
@@ -314,7 +318,7 @@ alwaysApply: false
 - **`<svelte:window bind:scrollY={y} on:event={handler}/>`:** Interact with `window`.
 - **`<svelte:document on:event={handler} use:action />`:** Interact with `document`.
 - **`<svelte:body on:event={handler} use:action />`:** Interact with `document.body`.
-- **`<svelte:boundary onerror={handler}>{#snippet failed(e,r)}</svelte:boundary>`:** Catch rendering errors. Provide `failed` snippet for fallback UI. `onerror` prop for programmatic handling. Catches render/effect errors, not async/event handler errors.
+- **`<svelte:boundary onerror={handler}>{#snippet failed(e,r)}</svelte:boundary>`:** Catch rendering errors. Provide `failed` snippet for fallback UI. `onerror` prop for programmatic handling. Catches render/effect errors, not async/event handler errors. See: https://svelte.dev/docs/svelte/svelte-boundary/llms.txt
 
 **Runtime API**
 
@@ -326,6 +330,7 @@ alwaysApply: false
 **Stores with Classes and Context**
 
 - **Class-based Stores:** Create reactive stores using classes with `$state` and `$derived` runes. `CORRECT: Use classes for complex state management with methods and derived values. AVOID: Overusing for simple component state.`
+
   ```ts
   class AuthStore {
   	private userId = $state<string | null>(null);
@@ -338,6 +343,7 @@ alwaysApply: false
   	};
   }
   ```
+
 - **Context Pattern:** Use `createContext` with `setContext`/`getContext` to share store instances across component tree.
 
   ```ts
@@ -452,423 +458,16 @@ Understanding what needs an `import` statement is crucial.
 
 # remote functions docs:
 
-Concise Cheat Sheet (query, query.batch, form, command, prerender)
-
-Setup (opt-in)
-
-```js
-// svelte.config.js
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-	kit: { experimental: { remoteFunctions: true } },
-	compilerOptions: { experimental: { async: true } }
-};
-export default config;
-```
-
-Overview
-
-- Define in `.remote.ts` under `src/`
-- Client calls are transformed to fetch the server implementation
-- `await` in components + `<svelte:boundary>` recommended for loading/error UI
-
-query
-
-The `query` function allows you to read dynamic data from the server (for _static_ data, consider using [`prerender`](#prerender) instead):
-
-```js
-/// file: src/routes/blog/data.remote.js
-// @filename: ambient.d.ts
-declare module '$lib/server/database' {
-	export function sql(strings: TemplateStringsArray, ...values: any[]): Promise<any[]>;
-}
-// @filename: index.js
-// ---cut---
-import { query } from '$app/server';
-import * as db from '$lib/server/database';
-
-export const getPosts = query(async () => {
-	const posts = await db.sql`
-		SELECT title, slug
-		FROM post
-		ORDER BY published_at
-		DESC
-	`;
-
-	return posts;
-});
-```
-
-> [!NOTE] Throughout this page, you'll see imports from fictional modules like `$lib/server/database` and `$lib/server/auth`. These are purely for illustrative purposes — you can use whatever database client and auth setup you like.
+> [!NOTE] **Remote Functions Documentation**
 >
-> The `db.sql` function above is a [tagged template function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates) that escapes any interpolated values.
-
-The query returned from `getPosts` works as a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) that resolves to `posts`:
-
-```svelte
-<!--- file: src/routes/blog/+page.svelte --->
-<script>
-	import { getPosts } from './data.remote';
-</script>
-
-<h1>Recent posts</h1>
-
-<ul>
-	{#each await getPosts() as { title, slug }}
-		<li><a href="/blog/{slug}">{title}</a></li>
-	{/each}
-</ul>
-```
-
-Until the promise resolves — and if it errors — the nearest [`<svelte:boundary>`](../svelte/svelte-boundary) will be invoked.
-
-While using `await` is recommended, as an alternative the query also has `loading`, `error` and `current` properties:
-
-```svelte
-<!--- file: src/routes/blog/+page.svelte --->
-<script>
-	import { getPosts } from './data.remote';
-
-	const query = getPosts();
-</script>
-
-<h1>Recent posts</h1>
-
-{#if query.error}
-	<p>oops!</p>
-{:else if query.loading}
-	<p>loading...</p>
-{:else}
-	<ul>
-		{#each query.current as { title, slug }}
-			<li><a href="/blog/{slug}">{title}</a></li>
-		{/each}
-	</ul>
-{/if}
-```
-
-> [!NOTE] For the rest of this document, we'll use the `await` form.
-
-### Query arguments
-
-Query functions can accept an argument, such as the `slug` of an individual post:
-
-```svelte
-<!--- file: src/routes/blog/[slug]/+page.svelte --->
-<script>
-	import { getPost } from '../data.remote';
-
-	let { params } = $props();
-
-	const post = $derived(await getPost(params.slug));
-</script>
-
-<h1>{post.title}</h1><div>{@html post.content}</div>
-```
-
-Since `getPost` exposes an HTTP endpoint, it's important to validate this argument to be sure that it's the correct type. For this, we can use any [Standard Schema](https://standardschema.dev/) validation library such as [Zod](https://zod.dev/) or [Valibot](https://valibot.dev/):
-
-```js
-/// file: src/routes/blog/data.remote.js
-// @filename: ambient.d.ts
-declare module '$lib/server/database' {
-	export function sql(strings: TemplateStringsArray, ...values: any[]): Promise<any[]>;
-}
-// @filename: index.js
-// ---cut---
-import * as v from 'valibot';
-import { error } from '@sveltejs/kit';
-import { query } from '$app/server';
-import * as db from '$lib/server/database';
-
-export const getPosts = query(async () => { /* ... */ });
-
-export const getPost = query(v.string(), async (slug) => {
-	const [post] = await db.sql`
-		SELECT * FROM post
-		WHERE slug = ${slug}
-	`;
-
-	if (!post) error(404, 'Not found');
-	return post;
-});
-```
-
-Both the argument and the return value are serialized with [devalue](https://github.com/sveltejs/devalue), which handles types like `Date` and `Map` (and custom types defined in your [transport hook](hooks#Universal-hooks-transport)) in addition to JSON.
-
-### Refreshing queries
-
-Any query can be re-fetched via its `refresh` method, which retrieves the latest value from the server:
-
-```svelte
-<button onclick={() => getPosts().refresh()}> Check for new posts </button>
-```
-
-> [!NOTE] Queries are cached while they're on the page, meaning `getPosts() === getPosts()`. This means you don't need a reference like `const posts = getPosts()` in order to update the query.
-
-## query.batch
-
-`query.batch` works like `query` except that it batches requests that happen within the same macrotask. This solves the so-called n+1 problem: rather than each query resulting in a separate database call (for example), simultaneous queries are grouped together.
-
-On the server, the callback receives an array of the arguments the function was called with. It must return a function of the form `(input: Input, index: number) => Output`. SvelteKit will then call this with each of the input arguments to resolve the individual calls with their results.
-
-```js
-/// file: weather.remote.js
-// @filename: ambient.d.ts
-declare module '$lib/server/database' {
-	export function sql(strings: TemplateStringsArray, ...values: any[]): Promise<any[]>;
-}
-// @filename: index.js
-// ---cut---
-import * as v from 'valibot';
-import { query } from '$app/server';
-import * as db from '$lib/server/database';
-
-export const getWeather = query.batch(v.string(), async (cities) => {
-	const weather = await db.sql`
-		SELECT * FROM weather
-		WHERE city = ANY(${cities})
-	`;
-	const lookup = new Map(weather.map(w => [w.city, w]));
-
-	return (city) => lookup.get(city);
-});
-```
-
-```svelte
-<!--- file: Weather.svelte --->
-<script>
-	import CityWeather from './CityWeather.svelte';
-	import { getWeather } from './weather.remote.js';
-
-	let { cities } = $props();
-	let limit = $state(5);
-</script>
-
-<h2>Weather</h2>
-
-{#each cities.slice(0, limit) as city}
-	<h3>{city.name}</h3>
-	<CityWeather weather={await getWeather(city.id)} />
-{/each}
-
-{#if cities.length > limit}
-	<button onclick={() => (limit += 5)}> Load more </button>
-{/if}
-```
-
-form
-
-```ts
-import { form } from '$app/server';
-
-export const createPost = form(schema, async (data, invalid) => {
-	// mutate, may call invalid(...) for field/global errors
-	// redirect(...) or return data (available as createPost.result)
-});
-
-// <form {...createPost}> ... </form>
-```
-
-- Spreads onto `<form>`; progressive enhancement by default
-- `fields.*.as(type[, value])`, `fields.*.issues()`, `fields.value()`, `fields.set(...)`
-- `validate(opts?)`, `preflight(schema)` for client‑side validation
-- `pending`, `result`, `buttonProps`, `enhance(cb)`, `for(id)`
-- Single‑flight updates:
-  - Server: call `someQuery(args).refresh()` or `.set(value)` inside handler
-  - Client: `await submit().updates(someQuery(args)[.withOverride(...)])`
-
-command
-
-```ts
-import { command } from '$app/server';
-
-export const addLike = command(v.string(), async (id) => {
-	// mutate
-});
-
-// call from handlers (not during render)
-```
-
-- Not tied to elements; cannot be called during render
-- No redirects (return shape and handle on client if needed)
-- Must specify affected queries:
-  - Server: `someQuery(args).refresh()` / `.set(...)`
-  - Client: `await addLike(id).updates(someQuery(id)[.withOverride(...)])`
-
-prerender
-
-```ts
-import { prerender } from '$app/server';
-
-export const getStatic = prerender(async () => ({
-	/* data */
-}));
-// prerender(v.string(), async (arg) => { ... }, { inputs: () => [...], dynamic: false|true })
-```
-
-- Runs at build; cacheable; ideal for rarely changing data
-- `inputs()` seeds build‑time calls; `dynamic:true` keeps server impl for runtime arguments
-- Note: when entire page `prerender = true`, you can't use dynamic `query`
-
-Validation & Errors
-
-- Pass Standard Schema (e.g., Zod/Valibot) as first arg for `query`, `form`, `command`, `prerender`
-- Use `'unchecked'` to opt out (be careful)
-- Customize 400s via `handleValidationError` hook
-
-Request context
-
-- `getRequestEvent()` available inside handlers for cookies, etc.
-- Caveats: cannot set headers (except cookies inside `form`/`command`); `route/params/url` refer to the calling page, not the generated endpoint; don't use them for auth decisions
-
-Redirects
-
-- Allowed in `query`, `form`, `prerender`
-- Not allowed in `command` (return data and handle client‑side)
+> For the latest information on how to use remote functions (`query`, `form`, `command`, `prerender`), see: https://svelte.dev/docs/kit/remote-functions/llms.txt
+>
+> For information on how using `await` works in Svelte components, see: https://svelte.dev/docs/svelte/await-expressions/llms.txt
 
 # async svelte docs:
 
-As of Svelte 5.36, you can use the `await` keyword inside your components in three places where it was previously unavailable:
-
-- at the top level of your component's `<script>`
-- inside `$derived(...)` declarations
-- inside your markup
-
-This feature is currently experimental, and you must opt in by adding the `experimental.async` option wherever you [configure](/docs/kit/configuration) Svelte, usually `svelte.config.js`:
-
-```js
-/// file: svelte.config.js
-export default {
-	compilerOptions: {
-		experimental: {
-			async: true
-		}
-	}
-};
-```
-
-The experimental flag will be removed in Svelte 6.
-
-## Synchronized updates
-
-When an `await` expression depends on a particular piece of state, changes to that state will not be reflected in the UI until the asynchronous work has completed, so that the UI is not left in an inconsistent state
-
-```svelte
-<script>
-	let a = $state(1);
-	let b = $state(2);
-
-	async function add(a, b) {
-		await new Promise((f) => setTimeout(f, 500)); // artificial delay
-		return a + b;
-	}
-</script>
-
-<input type="number" bind:value={a} />
-<input type="number" bind:value={b} />
-
-<p>{a} + {b} = {await add(a, b)}</p>
-```
-
-...if you increment `a`, the contents of the `<p>` will _not_ immediately update to read this —
-
-```html
-<p>2 + 2 = 3</p>
-```
-
-— instead, the text will update to `2 + 2 = 4` when `add(a, b)` resolves.
-
-Updates can overlap — a fast update will be reflected in the UI while an earlier slow update is still ongoing.
-
-## Concurrency
-
-Svelte will do as much asynchronous work as it can in parallel. For example if you have two `await` expressions in your markup...
-
-```svelte
-<p>{await one()}</p><p>{await two()}</p>
-```
-
-...both functions will run at the same time, as they are independent expressions, even though they are _visually_ sequential.
-
-This does not apply to sequential `await` expressions inside your `<script>` or inside async functions — these run like any other asynchronous JavaScript. An exception is that independent `$derived` expressions will update independently, even though they will run sequentially when they are first created:
-
-```js
-async function one() {
-	return 1;
-}
-async function two() {
-	return 2;
-}
-// ---cut---
-// these will run sequentially the first time,
-// but will update independently
-let a = $derived(await one());
-let b = $derived(await two());
-```
-
-> [!NOTE] If you write code like this, expect Svelte to give you an [`await_waterfall`](runtime-warnings#Client-warnings-await_waterfall) warning
-
-## Indicating loading states
-
-To render placeholder UI, you can wrap content in a `<svelte:boundary>` with a [`pending`](svelte-boundary#Properties-pending) snippet. This will be shown when the boundary is first created, but not for subsequent updates, which are globally coordinated.
-
-After the contents of a boundary have resolved for the first time and have replaced the `pending` snippet, you can detect subsequent async work with [`$effect.pending()`]($effect#$effect.pending). This is what you would use to display a "we're asynchronously validating your input" spinner next to a form field, for example.
-
-You can also use [`settled()`](svelte#settled) to get a promise that resolves when the current update is complete:
-
-```js
-let color = 'red';
-let answer = -1;
-let updating = false;
-// ---cut---
-import { tick, settled } from 'svelte';
-
-async function onclick() {
-	updating = true;
-
-	// without this, the change to `updating` will be
-	// grouped with the other changes, meaning it
-	// won't be reflected in the UI
-	await tick();
-
-	color = 'octarine';
-	answer = 42;
-
-	await settled();
-
-	// any updates affected by `color` or `answer`
-	// have now been applied
-	updating = false;
-}
-```
-
-## Error handling
-
-Errors in `await` expressions will bubble to the nearest [error boundary](svelte-boundary).
-
-## Server-side rendering
-
-Svelte supports asynchronous server-side rendering (SSR) with the `render(...)` API. To use it, simply await the return value:
-
-```js
-/// file: server.js
-import { render } from 'svelte/server';
-import App from './App.svelte';
-
-const { head, body } = +++await+++ render(App);
-```
-
-> [!NOTE] If you're using a framework like SvelteKit, this is done on your behalf.
-
-If a `<svelte:boundary>` with a `pending` snippet is encountered during SSR, that snippet will be rendered while the rest of the content is ignored. All `await` expressions encountered outside boundaries with `pending` snippets will resolve and render their contents prior to `await render(...)` returning.
-
-> [!NOTE] In the future, we plan to add a streaming implementation that renders the content in the background.
-
-## Caveats
-
-As an experimental feature, the details of how `await` is handled (and related APIs like `$effect.pending()`) are subject to breaking changes outside of a semver major release, though we intend to keep such changes to a bare minimum.
-
-## Breaking changes
-
-Effects run in a slightly different order when the `experimental.async` option is `true`. Specifically, _block_ effects like `{#if ...}` and `{#each ...}` now run before an `$effect.pre` or `beforeUpdate` in the same component, which means that in very rare situations it is possible to update a block that should no longer exist, but only if you update state inside an effect, which you should avoid
+> [!NOTE] **Async/Await Expressions**
+>
+> For complete documentation on using `await` in Svelte components, see: https://svelte.dev/docs/svelte/await-expressions/llms.txt
+>
+> **Quick setup:** Enable `experimental.async: true` in `svelte.config.js` to use `await` at the top level of `<script>`, inside `$derived`, and in markup.
