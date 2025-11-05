@@ -24,36 +24,36 @@
 		<h3>You might be looking for:</h3>
 
 		<p>
-			<a href="/macos">My MacOS Setup</a>: a collection of resources on how I setup my mac to be a
-			power user's dream. Includes karabiner config, keyboard shortcuts, tools I used to make my
-			configs, all the programs I use, and more.
+			<a href="/macos">My MacOS Setup</a> a collection of resources on how I setup my mac to be a power
+			user's dream. Includes karabiner config, keyboard shortcuts, tools I used to make my configs, all
+			the programs I use, and more.
 		</p>
 
 		<p>
-			<a href="/karabiner">Karabiner Config</a>: my complete karabiner elements config and a
-			visualizer for all my keybindings.
+			<a href="/karabiner">Karabiner Config</a> my complete karabiner elements config and a visualizer
+			for all my keybindings.
 		</p>
 
 		<p>
-			<a href="/sv">SvelteKit Setup</a>: a bunch of prompts/cursor rules to get your SvelteKit
-			project started.
+			<a href="/sv">SvelteKit Setup</a> a bunch of prompts/cursor rules to get your SvelteKit project
+			started.
 		</p>
 
 		<p>
-			<a href="https://github.com/bmdavis419/river-mono" target="_blank">River</a>: a trpc like
-			experience for durable streams and ai agents.
+			<a href="https://github.com/bmdavis419/river-mono" target="_blank">River</a> a trpc like experience
+			for durable streams and ai agents.
 		</p>
 
 		<p>
-			<a href="https://insiderviz.com" target="_blank">Insiderviz</a>: an insider trading data
-			visualization platform. I built this in college with the boys. Was a really cool project that
-			is now pretty much abandoned.
+			<a href="https://insiderviz.com" target="_blank">Insiderviz</a> an insider trading data visualization
+			platform. I built this in college with the boys. Was a really cool project that is now pretty much
+			abandoned.
 		</p>
 
 		<p>
-			<a href="https://svg.davis7.sh" target="_blank">Quick SVG Background</a>: A really simple
-			webapp for uploading an SVG and adding a background to it. I know it sounds dumb, but I use it
-			all the time for making thumbnails.
+			<a href="https://svg.davis7.sh" target="_blank">Quick SVG Background</a> A really simple webapp
+			for uploading an SVG and adding a background to it. I know it sounds dumb, but I use it all the
+			time for making thumbnails.
 		</p>
 	</article>
 	<SocialLinks />
