@@ -40,6 +40,11 @@
 		</p>
 
 		<p>
+			<a href="https://github.com/bmdavis419/river-mono" target="_blank">River</a>: a trpc like
+			experience for durable streams and ai agents.
+		</p>
+
+		<p>
 			<a href="https://insiderviz.com" target="_blank">Insiderviz</a>: an insider trading data
 			visualization platform. I built this in college with the boys. Was a really cool project that
 			is now pretty much abandoned.
