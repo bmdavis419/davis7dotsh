@@ -40,7 +40,7 @@
 		</p>
 
 		<p>
-			<a href="https://github.com/bmdavis419/river-mono" target="_blank">River</a> a trpc like experience
+			<a href="https://github.com/bmdavis419/river" target="_blank">River</a> a trpc like experience
 			for durable streams and ai agents.
 		</p>
 
