@@ -2,54 +2,73 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
-  --font-family-geist: 'Geist', system-ui, -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
-  --font-family-geist-mono: 'GeistMono', monospace;
+	--font-family-geist:
+		'Geist', system-ui, -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue',
+		'Arial', sans-serif;
+	--font-family-geist-mono: 'GeistMono', monospace;
+
+	--color-neutral-50: #fafafa;
+	--color-neutral-100: #f5f5f5;
+	--color-neutral-200: #e5e5e5;
+	--color-neutral-300: #d4d4d4;
+	--color-neutral-400: #a3a3a3;
+	--color-neutral-500: #737373;
+	--color-neutral-600: #525252;
+	--color-neutral-700: #404040;
+	--color-neutral-800: #262626;
+	--color-neutral-900: #171717;
+	--color-neutral-950: #0a0a0a;
 }
 
 @font-face {
 	font-family: 'GeistMono';
 	src: url('/GeistMono[wght].ttf') format('truetype-variations');
-	font-weight: 100 900; /* Specify the full range of weights */
+	font-weight: 100 900;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'Geist';
 	src: url('/Geist[wght].ttf') format('truetype-variations');
-	font-weight: 100 900; /* Specify the full range of weights */
+	font-weight: 100 900;
 	font-style: normal;
 }
 
+:root {
+	font-family: var(--font-family-geist);
+	background-color: var(--color-neutral-950);
+	color: var(--color-neutral-200);
+}
+
 .social-link {
-	@apply flex items-center justify-center transition-transform hover:scale-110;
+	@apply flex items-center justify-center text-neutral-400 transition-transform hover:scale-110 hover:text-neutral-100;
 }
 
 .svg-container {
 	@apply flex h-8 w-8 items-center justify-center;
 }
 
+.prose {
+	@apply text-neutral-300;
+	max-width: 65ch;
+}
+
+.prose :where(h1, h2, h3, h4, h5, h6) {
+	@apply font-medium tracking-tight text-neutral-100;
+}
+
+.prose strong {
+	@apply font-semibold text-neutral-100;
+}
+
 .prose a {
-	@apply text-blue-300 hover:text-blue-200;
+	@apply text-neutral-100 transition-colors hover:text-white;
 	text-decoration: none;
-	position: relative;
+	border-bottom: 1px solid var(--color-neutral-700);
 }
 
-.prose a::after {
-	content: '';
-	position: absolute;
-	width: 100%;
-	height: 1px;
-	bottom: -2px;
-	left: 0;
-	background-color: var(--color-blue-300);
-	transform: scaleX(0);
-	transform-origin: bottom right;
-	transition: transform 0.3s ease-out;
-}
-
-.prose a:hover::after {
-	transform: scaleX(1);
-	transform-origin: bottom left;
+.prose a:hover {
+	border-bottom-color: var(--color-neutral-400);
 }
 
 .social-link svg {
@@ -59,6 +78,6 @@
 }
 
 .social-link:hover svg {
-	filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
+	filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
 	transform: scale(1.1);
 }

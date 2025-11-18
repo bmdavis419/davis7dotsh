@@ -8,15 +8,14 @@
 	let { children } = $props();
 </script>
 
-<div class="relative min-h-screen w-full">
+<div class="relative min-h-screen w-full bg-neutral-950 text-neutral-50">
 	<div
-		class="z-5 fixed inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(107,114,128,0.1),transparent_80%)]"
-	></div>
-	<div
-		class="z-5 fixed inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(75,85,99,0.1),transparent_80%)]"
+		class="fixed inset-0 h-full w-full bg-[url('/grid.svg')] [mask-image:linear-gradient(to_bottom,white_0%,white_75%,transparent_100%)]"
 	></div>
 
-	<div class="relative z-10 flex h-full w-full justify-center overflow-auto py-8 pb-24">
-		{@render children()}
+	<div class="relative z-10 flex h-full w-full justify-center overflow-auto p-4 sm:p-8">
+		<div class="w-full max-w-2xl">
+			{@render children()}
+		</div>
 	</div>
 </div>
