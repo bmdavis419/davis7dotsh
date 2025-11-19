@@ -1,10 +1,11 @@
 <script lang="ts">
-	import * as d3 from 'd3';
-
-	let container: HTMLElement;
+	let keyTitle = $state('Hover a key');
+	let keyDescription = $state('Hover one of the keys to see the keybinding');
+	let hoveredKey = $state.raw<{ label: string } | null>(null);
+	let lastTimeout: number | null = null;
 
 	// Simple keyboard layout: each row is an array of keys
-	const layout: { label: string; width: number; title?: string; description?: string }[][] = [
+	const layout = $state([
 		[
 			{ label: 'Esc', width: 50 },
 			{ label: 'F1', width: 40 },
@@ -141,107 +142,48 @@
 			{ label: 'cmd', width: 60 },
 			{ label: 'opt', width: 60 }
 		]
-	];
+	]);
 
 	const keyHeight = 40;
 	const rowSpacing = 10;
 	const keySpacing = 8;
 	const svgWidth = 800;
 	const svgHeight = layout.length * (keyHeight + rowSpacing) + rowSpacing;
+	const rowOffsets = [10, 10, 30, 40, 50, 10];
 
-	let keyTitle = $state('Hover a key');
-	let keyDescription = $state('Hover one of the keys to see the keybinding');
-
-	const setKey = (data: { title?: string; description?: string }) => {
-		keyTitle = data.title || 'Hover a key';
-		keyDescription = data.description || 'Hover one of the keys to see the keybinding';
-	};
-
-	let lastTimeout: number | null = null;
-
-	function render() {
-		d3.select(container).selectAll('*').remove();
-
-		const svg = d3
-			.select(container)
-			.append('svg')
-			.attr('width', svgWidth)
-			.attr('height', svgHeight)
-			.attr('class', 'w-full h-auto');
-
-		const rowOffsets = [10, 10, 30, 40, 50, 10];
-
-		let y = rowSpacing;
-		layout.forEach((row, rowIndex) => {
+	// Pre-calculate positions
+	const keys = $derived(
+		layout.flatMap((row, rowIndex) => {
 			let x = rowOffsets[rowIndex];
-			row.forEach((key) => {
-				const isCapsLock = key.label === 'Caps';
-				const hasKeybinding = key.title && key.description;
-				const rectClass = isCapsLock
-					? 'fill-orange-500/80 stroke-orange-400 stroke-2 drop-shadow-lg filter drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
-					: hasKeybinding
-						? 'fill-blue-400/40 stroke-blue-300/50 stroke-1 backdrop-blur-sm drop-shadow-sm'
-						: 'fill-white/20 stroke-white/30 stroke-1 backdrop-blur-sm drop-shadow-sm';
-				const textClass = isCapsLock
-					? 'fill-white font-medium text-sm select-none drop-shadow-sm'
-					: 'fill-white font-medium text-sm select-none';
-
-				const keyGroup = svg.append('g');
-
-				const rect = keyGroup
-					.append('rect')
-					.attr('x', x)
-					.attr('y', y)
-					.attr('width', key.width)
-					.attr('height', keyHeight)
-					.attr('rx', 6)
-					.attr('class', rectClass);
-
-				keyGroup
-					.append('text')
-					.attr('x', x + key.width / 2)
-					.attr('y', y + keyHeight / 2)
-					.attr('text-anchor', 'middle')
-					.attr('dominant-baseline', 'central')
-					.attr('class', textClass)
-					.text(key.label);
-
-				if (!isCapsLock) {
-					keyGroup
-						.style('cursor', 'pointer')
-						.on('mouseenter', function () {
-							rect.attr(
-								'class',
-								'fill-blue-600/80 stroke-blue-400 stroke-2 drop-shadow-lg filter drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]'
-							);
-							setKey(key);
-							if (lastTimeout) {
-								clearTimeout(lastTimeout);
-							}
-						})
-						.on('mouseleave', function () {
-							rect.attr('class', rectClass);
-							if (lastTimeout) {
-								clearTimeout(lastTimeout);
-							}
-							lastTimeout = setTimeout(() => {
-								setKey({});
-							}, 150);
-						});
-				}
+			const y = rowSpacing + rowIndex * (keyHeight + rowSpacing);
+			return row.map((key) => {
+				const k = { ...key, x, y };
 				x += key.width + keySpacing;
+				return k;
 			});
-			y += keyHeight + rowSpacing;
-		});
+		})
+	);
+
+	function handleMouseEnter(key: (typeof keys)[0]) {
+		if (key.label === 'Caps') return;
+		hoveredKey = key;
+		if (lastTimeout) clearTimeout(lastTimeout);
+		keyTitle = key.title || 'Hover a key';
+		keyDescription = key.description || 'Hover one of the keys to see the keybinding';
+	}
+
+	function handleMouseLeave() {
+		hoveredKey = null;
+		if (lastTimeout) clearTimeout(lastTimeout);
+		lastTimeout = window.setTimeout(() => {
+			keyTitle = 'Hover a key';
+			keyDescription = 'Hover one of the keys to see the keybinding';
+		}, 150);
 	}
 
 	$effect(() => {
-		render();
 		return () => {
-			if (lastTimeout) {
-				clearTimeout(lastTimeout);
-				lastTimeout = null;
-			}
+			if (lastTimeout) clearTimeout(lastTimeout);
 		};
 	});
 </script>
@@ -249,9 +191,9 @@
 <section
 	class=" flex w-full items-center gap-6 rounded-lg border border-white/20 bg-white/10 p-6 backdrop-blur-sm"
 >
-	<div class="flex-shrink-0">
+	<div class="shrink-0">
 		<div
-			class="flex h-16 w-16 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-orange-600"
+			class="flex h-16 w-16 items-center justify-center rounded-lg bg-linear-to-br from-blue-500 to-orange-600"
 		>
 			<svg class="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 24 24">
 				<path
@@ -266,4 +208,46 @@
 	</div>
 </section>
 
-<div bind:this={container} class="overflow-x-auto rounded-lg p-4"></div>
+<div class="w-full overflow-x-auto rounded-lg p-4">
+	<svg viewBox="0 0 {svgWidth} {svgHeight}" class="h-auto w-full">
+		{#each keys as key}
+			{@const isCapsLock = key.label === 'Caps'}
+			{@const hasKeybinding = key.title && key.description}
+			{@const isHovered = hoveredKey === key}
+
+			<!-- svelte-ignore a11y_click_events_have_key_events -->
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
+			<g
+				style:cursor={isCapsLock ? 'default' : 'pointer'}
+				onmouseenter={() => handleMouseEnter(key)}
+				onmouseleave={handleMouseLeave}
+			>
+				<rect
+					x={key.x}
+					y={key.y}
+					width={key.width}
+					height={keyHeight}
+					rx={6}
+					class={isCapsLock
+						? 'fill-orange-500/80 stroke-orange-400 stroke-2 drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] filter'
+						: isHovered
+							? 'fill-blue-600/80 stroke-blue-400 stroke-2 drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] filter'
+							: hasKeybinding
+								? 'fill-blue-400/40 stroke-blue-300/50 stroke-1 drop-shadow-sm backdrop-blur-sm'
+								: 'fill-white/20 stroke-white/30 stroke-1 drop-shadow-sm backdrop-blur-sm'}
+				/>
+				<text
+					x={key.x + key.width / 2}
+					y={key.y + keyHeight / 2}
+					text-anchor="middle"
+					dominant-baseline="central"
+					class={isCapsLock
+						? 'fill-white text-sm font-medium drop-shadow-sm select-none'
+						: 'fill-white text-sm font-medium select-none'}
+				>
+					{key.label}
+				</text>
+			</g>
+		{/each}
+	</svg>
+</div>
