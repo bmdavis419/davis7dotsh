@@ -20,7 +20,7 @@
 		</div>
 		<span class="sr-only">YouTube</span>
 	</a>
-	<a href="https://x.com/@bmdavis419" target="_blank" rel="noopener noreferrer" class="social-link">
+	<a href="https://x.com/@davis7" target="_blank" rel="noopener noreferrer" class="social-link">
 		<div class="svg-container">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
