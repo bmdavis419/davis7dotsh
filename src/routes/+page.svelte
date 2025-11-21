@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import SocialLinks from '$lib/components/SocialLinks.svelte';
 	import logo from '$lib/svg/my-logo.svg';
 </script>
